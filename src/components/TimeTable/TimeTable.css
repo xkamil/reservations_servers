@@ -1,0 +1,42 @@
+.time-table {
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 5px;
+    border-collapse: separate;
+}
+
+.time-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.time-table {
+    width: 100%;
+}
+
+.time-table-cell-container {
+    padding: 4px;
+    height: 31px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.time-table-cell {
+    height: 23px;
+    overflow: hidden;
+    text-align: center;
+    display: inline-block;
+    color: #fff;
+    font-weight: 400;
+    border-radius: 5px;
+}
+
+.time-table-cell-small {
+    width: 30%;
+}
+
+.time-table-cell-big {
+    background-color: rgba(255,255,255,0.3);
+    width: 70%;
+}

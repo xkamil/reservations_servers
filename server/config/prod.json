@@ -1,0 +1,6 @@
+{
+  "secret": "iluminati-prod",
+  "database": "mongodb://127.0.0.1:27017/reservations_prod",
+  "port": "3002",
+  "env": "dev"
+}
