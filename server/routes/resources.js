@@ -9,35 +9,26 @@ router.get('/', (req, res, next) => {
 });
 
 router.delete('/:name', (req, res, next) => {
-    const name = req.params.name || '';
+    const name = req.params.name;
 
     Resource.remove({name})
-        .then(() => res.json(`Resource ${name} removed`))
+        .then(() => res.end())
         .catch(err => next(err))
 });
 
-router.delete('/', (req, res,next) => {
+router.delete('/', (req, res, next) => {
     Resource.remove()
         .then(() => res.send())
         .catch(err => next(err))
 });
 
 router.post('/:name', (req, res, next) => {
-    const name = req.params.name || '';
+    const name = req.params.name;
+    const newResource = new Resource({name});
 
-    Resource.findOne({name})
-        .then(resource => {
-            if (resource) {
-                res.status(409).json(resource)
-            } else {
-                const newResource = new Resource({name});
-                newResource.save()
-                    .then(resource => res.json(resource))
-                    .catch(err => next(err))
-            }
-        })
-        .catch(err => next(err));
-
+    newResource.save()
+        .then(resource => res.json(resource))
+        .catch(err => err.code === 11000 ? res.status(409).json(err) : next(err))
 });
 
 module.exports = router;

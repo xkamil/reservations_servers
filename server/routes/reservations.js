@@ -1,45 +1,46 @@
 const express = require('express');
 const router = express.Router();
-const protectedRouter = express.Router();
-const User = require('../models/user');
 const Reservation = require('../models/reservation');
-const Resource = require('../models/resource');
 
 router.get('/', (req, res, next) => {
-    Reservation.getAll()
+    Reservation.find()
+        .then(user => res.json(user))
+        .catch(err => next(err));
+});
+
+router.post('/',  (req, res, next) => {
+    const reservation = Object.assign({user: req.user.email}, req.body);
+    const newReservation = new Reservation(reservation);
+
+    newReservation.save()
         .then(data => res.json(data))
         .catch(err => next(err))
 });
 
-protectedRouter.post('/', (req, res, next) => {
-    const reservation = req.body;
-    const userId = req.user ? req.user._id : null;
-    const resourceId = reservation ? reservation.resourceId : null;
+router.delete('/:id', (req, res, next) => {
+    const _id = req.params.id;
 
-    const newReservation = {
-        user: userId,
-        resource: resourceId,
-        dateFrom: reservation.dateFrom,
-        dateTo: reservation.dateTo
-    };
-
-    Reservation.add(newReservation)
-        .then(data => res.json(data))
+    Reservation.remove({_id})
+        .then(() => res.end())
         .catch(err => next(err))
 });
 
-protectedRouter.delete('/:id', (req, res, next) => {
-    const id = req.params.id;
-
-    Reservation.delete(id)
-        .then(() => res.send())
+router.delete('/', (req, res, next) => {
+    Reservation.remove()
+        .then(() => res.end())
         .catch(err => next(err))
 });
 
-protectedRouter.delete('/', (req, res, next) => {
-    Reservation.deleteAll()
-        .then(() => res.send())
-        .catch(err => next(err))
-});
+function find(sourceArray, propName, propValue) {
+    let result = {};
 
-module.exports = {router, protectedRouter};
+    sourceArray.forEach(item => {
+        if (item[propName].toString() === propValue) {
+            result = item;
+        }
+    });
+
+    return result;
+}
+
+module.exports = router;

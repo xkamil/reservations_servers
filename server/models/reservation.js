@@ -1,14 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const User = require('./user');
-const Resource = require('./resource');
 
-const reservationSchema = new Schema(
+const schema = new Schema(
     {
-        user: Schema.Types.ObjectId,
-        resource: Schema.Types.ObjectId,
-        dateFrom: Date,
-        dateTo: Date,
+        user: {
+            type: String,
+            required: true
+        },
+        resource: {
+            type: String,
+            required: true
+        },
+        dateFrom: {
+            type: Number,
+            required: true
+        },
+        dateTo: {
+            type: Number,
+            required: true
+        },
         created: {type: Date, default: Date.now},
         updated: {type: Date, default: Date.now},
     },
@@ -17,59 +27,45 @@ const reservationSchema = new Schema(
     }
 );
 
-const Reservation = mongoose.model('Reservation', reservationSchema);
+const Reservation = mongoose.model('Reservation', schema);
 
-Reservation.getAll = () => {
-    return new Promise((resolve, reject) => {
-        Reservation.find({}, (err, data) => err ? reject(err) : resolve(data))
-    })
-};
+schema.pre('save', function (next) {
 
-Reservation.delete = (id) => {
-    return new Promise((resolve, reject) => {
-        Reservation.remove({_id: id}, err => err ? reject(err) : resolve())
-    })
-};
-
-Reservation.deleteAll = () => {
-    return new Promise((resolve, reject) => {
-        Reservation.remove({}, err => err ? reject(err) : resolve())
-    })
-};
-
-Reservation.add = (reservation) => {
-    const newReservation = new Reservation(reservation);
-
-    return new Promise((resolve, reject) => {
-        newReservation.save({}, (err, data) => err ? reject(err) : resolve(data))
-    })
-};
-
-Reservation.validate = (reservation) => {
-    let errors = [];
-    let promises = [];
-
-    if (!mongoose.Types.ObjectId.isValid(reservation.userId)) {
-        errors.push(`Invalid user id: ${reservation.userId}`)
-    } else {
-        promises.push(User.findById(reservation.userId))
+    if (this.dateTo <= this.dateFrom) {
+        return next({code: 501, message: 'dateTo must be greater than dateFrom'})
     }
 
-    if (!mongoose.Types.ObjectId.isValid(reservation.resourceId)) {
-        errors.push(`Invalid resource id: ${reservation.resourceId}`)
-    }else{
-        promises.push(Reservation.find(reservation.userId))
-    }
+    Reservation.findOne({
+        resource: this.resource,
+        $or: [
+            {
+                $and: [
+                    {dateFrom: {$lte: this.dateFrom}},
+                    {dateTo: {$gt: this.dateFrom}}
+                ]
+            },
+            {
+                $and: [
+                    {dateFrom: {$lt: this.dateTo}},
+                    {dateTo: {$gt: this.dateTo}}
+                ]
+            },
+            {
+                $and: [
+                    {dateFrom: {$gt: this.dateFrom}},
+                    {dateTo: {$lt: this.dateTo}}
+                ]
+            }
+        ]
 
-    if (new Date(reservation.dateFrom).toString() === 'Invalid Date') {
-        errors.push(`Invalid date: ${reservation.dateFrom}`)
-    }
+    }).then(res => {
+        if (res) {
+            return next({code: 502, message: 'Reservation already taken', reservation: res})
+        } else {
+            next();
+        }
+    });
+});
 
-    if (new Date(reservation.dateTo).toString() === 'Invalid Date') {
-        errors.push(`Invalid date: ${reservation.dateTo}`)
-    }
-
-
-};
 
 module.exports = Reservation;

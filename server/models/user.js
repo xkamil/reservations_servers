@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema(
+const schema = new Schema(
     {
-        email: String,
+        email: {
+            type: String,
+            required: true,
+            match: /^.+@pega\.com$/
+        },
         created: {type: Date, default: Date.now},
         updated: {type: Date, default: Date.now},
     },
@@ -12,4 +16,4 @@ const userSchema = new Schema(
     }
 );
 
-module.exports =  mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', schema);

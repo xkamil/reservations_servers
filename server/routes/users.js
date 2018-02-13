@@ -9,28 +9,20 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/:email', (req, res, next) => {
-    const EMAIL_PATTERN = /^.+@pega\.com$/;
-    const email = req.params.email || '';
-
-    if (!EMAIL_PATTERN.test(email)) {
-        return res.status(400).json({message: 'Invalid email.'})
-    }
+    const email = req.params.email;
 
     User.findOne({email})
-        .then(user => {
-            if (user) return res.json(user);
-
-            new User({email})
-                .save()
-                .then(user => res.json(user))
-                .catch(err => next(err));
+        .then(user => user ? user : new User({email}).save())
+        .then(user=> {
+            res.cookie('user', JSON.stringify(user),{ expires: new Date(Date.now() + 9000000), httpOnly: false});
+            res.json(user);
         })
-        .catch(next)
+        .catch(err => err.errors ? res.status(400).json(err.errors) : next(err))
 });
 
 router.delete('/', (req, res, next) => {
     User.remove()
-        .then(() => res.json('All users removed'))
+        .then(() => res.end())
         .catch(err => next(err))
 });
 

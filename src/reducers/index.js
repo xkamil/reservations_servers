@@ -1,10 +1,10 @@
 import {combineReducers} from 'redux';
-import timeTablesConfigurationsReducer from './TimeTablesConfigurationsReducer';
+import resourcesReducer from './ResourcesReducer';
 import reservationsReducer from './ReservationsReducer';
 import usersReducer from "./UsersReducer";
 
 const reducers = combineReducers({
-    configurations: timeTablesConfigurationsReducer,
+    resources: resourcesReducer,
     reservations: reservationsReducer,
     users: usersReducer
 });

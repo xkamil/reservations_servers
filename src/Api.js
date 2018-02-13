@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+axios.defaults.withCredentials = true;
+
 const users = {
     'Kamil Wrobel' : '89.64.57.245'
 };
@@ -45,7 +47,15 @@ const fakeReservations = {
 };
 
 class Api {
-    static URL = '/api';
+    static URL = 'http://localhost:3000/api';
+
+    static logIn(email){
+        return this._post('/users/'+ email)
+    }
+
+    static getResources(){
+        return this._get('/resources');
+    }
 
     static getTimeTablesConfigurations() {
         return Api.returnAfterDelay(fakeConfigurations)
@@ -56,7 +66,7 @@ class Api {
     }
 
     static getUsers() {
-        return Api.returnAfterDelay(users)
+        return Api._get('/users');
     }
 
     static getMyIp() {
@@ -78,6 +88,9 @@ class Api {
     static _get(path) {
         return new Promise((resolve, reject) => {
             axios.get(Api.URL + path).then((response) => {
+
+                console.log("debug123");
+                console.log(response.data);
                 resolve(response.data)
             }).catch(reject)
         });

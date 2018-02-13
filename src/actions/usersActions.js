@@ -1,14 +1,14 @@
 export const UPDATE_USERS = "UPDATE_USERS";
-export const UPDATE_MY_IP = "UPDATE_MY_IP";
+export const UPDATE_USER_INFO = "UPDATE_USER_INFO";
 
-export const updateUsers = (data, error) => ({
-    type: UPDATE_USERS,
+export const updateUserInfo = (data, error) => ({
+    type: UPDATE_USER_INFO,
     data,
     error
 });
 
-export const updateMyIp = (data, error) => ({
-    type: UPDATE_MY_IP,
+export const updateUsers = (data, error) => ({
+    type: UPDATE_USERS,
     data,
     error
 });
@@ -22,11 +22,11 @@ export const fetchUsers = () => {
     }
 };
 
-export const getMyIp = () => {
+export const logIn = (email) => {
     return (dispatch, getState, api) => {
-        return api.getMyIp().then(
-            data => dispatch(updateMyIp(data)),
-            error => dispatch(updateMyIp(null, error))
+        return api.logIn(email).then(
+            data => dispatch(updateUserInfo(data)),
+            error => dispatch(updateUserInfo(null, error))
         );
     }
 };

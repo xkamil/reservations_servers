@@ -1,10 +1,14 @@
-let email = 'kamil.wrobel@peg4a.com';
-let pattern = /^.+@pega\.com$/;
+let d1 = new Date();
 
- this.test = {
-    data: 'dupa'
-};
 
-let nazwa = 'test';
 
-console.log(new Date().toString() === 'Invalid Date');
+let d3 = new Date();
+
+setTimeout(()=>{
+    let d2 = new Date();
+
+    console.log(d1 === d3);
+},3000);
+
+
+console.log((new Date()).getTime());

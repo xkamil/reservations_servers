@@ -1,38 +1,28 @@
 import React, {Component} from 'react';
 import TimeTable from "../TimeTable/TimeTable";
 import {connect} from "react-redux";
-import {fetchConfigurations} from "../../actions/timeTablesConfigurationsActions";
 import {fetchReservations} from "../../actions/reservationsActions";
-import {fetchUsers, getMyIp} from "../../actions/usersActions";
+import {fetchUsers, logIn} from "../../actions/usersActions";
+import {fetchResources} from "../../actions/resourcesActions";
 
 class App extends Component {
 
     componentDidMount() {
-        this.props.fetchConfigurations();
-        this.props.fetchReservations();
+        this.props.logIn('kamil.wrobel@pega.com');
         this.props.fetchUsers();
-        this.props.getMyIp();
+
+        setTimeout(this.props.fetchResources, 1000);
     }
 
     render() {
-        const {configurations, reservations, location} = this.props;
-        const games = Object.getOwnPropertyNames(configurations.data);
+        const {users, reservations, resources} = this.props;
 
         return (
                 <div className="App">
                     {console.log(this.props)}
-                    <pre>{JSON.stringify(this.props.users)}</pre>
-
-                    {games.map(name => {
-
-                        if(location.pathname.endsWith(name))
-                        return (<TimeTable
-                            key={name}
-                            reservations={reservations.data[name] || {}}
-                            timeFrom={configurations.data[name].timeFrom}
-                            timeTo={configurations.data[name].timeTo}
-                            reservationTime={configurations.data[name].reservationTime}/>)}
-                    )}
+                    <pre>{JSON.stringify(users)}</pre>
+                    <pre>{JSON.stringify(reservations)}</pre>
+                    <pre>{JSON.stringify(resources)}</pre>
 
                 </div>
         );
@@ -41,17 +31,16 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        configurations: state.configurations,
+        resources: state.resources,
         reservations: state.reservations,
         users: state.users,
     }
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchConfigurations: () => dispatch(fetchConfigurations()),
-    fetchReservations: () => dispatch(fetchReservations()),
+    logIn: (email) => dispatch(logIn(email)),
     fetchUsers: () => dispatch(fetchUsers()),
-    getMyIp: () => dispatch(getMyIp())
+    fetchResources: () => dispatch(fetchResources())
 });
 
 App = connect(mapStateToProps, mapDispatchToProps)(App);

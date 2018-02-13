@@ -3,7 +3,12 @@ const Schema = mongoose.Schema;
 
 const resourceSchema = new Schema(
     {
-        name: String,
+        name: {
+            type: String,
+            index: {
+                unique: true
+            }
+        },
         created: {type: Date, default: Date.now},
         updated: {type: Date, default: Date.now},
     },
