@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header, hgroup,
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+
+        /* HTML5 display-role reset for older browsers */
+        article, aside, details, figcaption, figure,
+        footer, header, hgroup, menu, nav, section {
+            display: block;
+        }
+
+        body {
+            line-height: 1;
+        }
+
+        ol, ul {
+            list-style: none;
+        }
+
+        blockquote, q {
+            quotes: none;
+        }
+
+        blockquote:before, blockquote:after,
+        q:before, q:after {
+            content: '';
+            content: none;
+        }
+
+        .timetable-body {
+            margin-left: 150px;
+        }
+
+        .timetable-row {
+            min-width: 2100px;
+            display: flex;
+            flex-wrap: nowrap;
+            margin-bottom: 1px;
+            align-content: flex-start;
+        }
+
+        .timetable-cell {
+            min-width: 129px;
+            max-width: 129px;
+            padding: 10px;
+            height: 15px;
+            margin-right: 1px;
+        }
+
+        .timetable-cell-header {
+            background-color: #ddd;
+            text-align: center;
+        }
+
+        .filler {
+            height: 34px;
+            margin-bottom: 1px;
+            background-color: #eee;
+            width: 150px;
+        }
+
+        .reservation {
+            background-color: #ff4444;
+            width: 200px;
+            display: flex;
+            max-height: 34px;
+            justify-content: flex-start;
+            border-radius: 7px;
+        }
+
+        .btn-add-reservation {
+            background-color: #44ff44;
+            width: 30px;
+            max-height: 34px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bolder;
+            color: #fff;
+            text-shadow: 1px 1px #ddd;
+            cursor: pointer;
+        }
+
+        .info-window {
+            z-index: 10;
+            width: 200px;
+            height: 70px;
+            background-color: rgba(0,0,0,0.7);
+            border-radius: 5px;
+            position: absolute;
+            padding: 10px;
+            color: #fff;
+            font-weight: normal;
+        }
+
+
+        .timetable-container {
+            padding: 0;
+            width: 100vw;
+            overflow: auto;
+        }
+
+
+        .description {
+            position: absolute;
+            width: 149px;
+            background-color: white;
+            box-shadow: 5px 0 5px -5px rgba(0, 0, 0, 0.8);
+        }
+
+    </style>
+</head>
+<body>
+<br><br>
+<div class="timetable-container">
+    <div class="info-window">
+        <p>kamil.wrobel@pega.com</p>
+        <p><strong>From: 10:02 10:00 </strong></p>
+        <p>Testy regresji</p>
+    </div>
+
+    <div class="description">
+        <div class="timetable-cell timetable-cell-header">aaa</div>
+        <div class="timetable-cell">eng-killerbees01</div>
+        <div class="timetable-cell">eng-killerbees01</div>
+        <div class="timetable-cell">eng-killerbees01</div>
+        <div class="timetable-cell">eng-killerbees01</div>
+        <div class="timetable-cell">eng-killerbees01</div>
+    </div>
+
+    <div class="timetable-body">
+        <div class="timetable-row">
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+            <div class="timetable-cell timetable-cell-header">PN 12.02</div>
+        </div>
+
+        <div class="timetable-row">
+            <div class="filler"></div>
+            <div class="reservation">
+                <span>man</span>
+                <span>time</span>
+            </div>
+            <div class="reservation">
+                <span>man</span>
+                <span>time</span>
+            </div>
+            <div class="reservation">
+                <span>man</span>
+                <span>time</span>
+            </div>
+        </div>
+        <div class="timetable-row">
+            <div class="filler"></div>
+
+        </div>
+        <div class="timetable-row">
+            <div class="filler"></div>
+        </div>
+        <div class="timetable-row">
+            <div class="filler"></div>
+        </div>
+        <div class="timetable-row">
+            <div class="filler"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let cont = document.querySelector('.timetable-container');
+    cont.onmousewheel = (position) => {
+        cont.scrollLeft += position.deltaY / 3;
+    }
+
+    let info = document.querySelector('.info-window');
+
+    document.querySelectorAll('.reservation').forEach((box)=>{
+        box.onclick = (item)=>{
+            console.log(item)
+            console.log(info.style)
+            info.style.top = item.clientY + 'px';
+            info.style.left = item.clientX + 'px';
+        }
+    })
+    
+</script>
+
+</body>
+</html>
